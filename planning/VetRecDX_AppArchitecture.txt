@@ -1,0 +1,50 @@
+vetdbms/
+├── cmd/
+│   └── server/
+│       └── main.go          # Public code
+│
+├── internal/                # Private code
+│   ├── auth/                 # Authentication & authorization logic
+│   │   ├── handler.go
+│   │   ├── middleware.go
+│   │   └── service.go
+│   │
+│   ├── patient/              # Patient CRUD logic
+│   │   ├── handler.go
+│   │   ├── model.go
+│   │   └── service.go
+│   │
+│   ├── visit/                # Visit records, notes, medications, weight
+│   │   ├── handler.go
+│   │   ├── model.go
+│   │   └── service.go
+│   │
+│   ├── upload/               # File/photo handling
+│   │   ├── handler.go
+│   │   └── service.go
+│   │
+│   ├── config/               # Configuration loading (env, YAML, etc.)
+│   │   └── config.go
+│   │
+│   ├── db/                   # Database connection and migrations
+│   │   ├── connection.go
+│   │   └── migrations/
+│   │       └── 001_init.sql
+│   │
+│   ├── middleware/           # Shared middleware
+│   │   ├── logger.go
+│   │   └── auth.go
+│   │
+│   ├── utils/                 # Helper functions
+│   │   └── validator.go
+│   │
+│   └── router/               # API routes setup
+│       └── router.go
+│
+├── pkg/                      # Public packages
+│   └── storage/               # S3, MinIO, local file storage
+│       └── storage.go
+│
+├── go.mod
+├── go.sum
+└── README.md
