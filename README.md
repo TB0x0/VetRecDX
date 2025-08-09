@@ -2,7 +2,7 @@
 An open source veterinary records management software for nonprofits
 
 ## Current Tasks
-[ ] Complete Planning and Design
+- [ ] Planning and Design
  - [ ] App Architecture
  - [ ] DB Schema
  - [ ] Visual Design
