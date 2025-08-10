@@ -1,8 +1,4 @@
 vetdbms/
-├── cmd/
-│   └── server/
-│       └── main.go          # Public code
-│
 ├── internal/                # Private code
 │   ├── auth/                 # Authentication & authorization logic
 │   │   ├── handler.go
