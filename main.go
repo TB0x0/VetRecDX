@@ -4,13 +4,23 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/joho/godotenv"
+
 	"vetrecdx/internal/auth"
+	"vetrecdx/internal/db"
 )
 
 func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /", defaultHandler)
+	// DB Connection
+	env_err := godotenv.Load()
+	if env_err != nil {
+		log.Panicln("Error loading .env file")
+	}
+	db.ConnectDB()
 
 	//auth
 	mux.HandleFunc("GET /admin", auth.GetUserHandler)
