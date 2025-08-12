@@ -4,7 +4,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/joho/godotenv"
+
 	"vetrecdx/internal/auth"
+	"vetrecdx/internal/db"
 )
 
 func main() {
@@ -12,6 +16,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// DB Connection
+	env_err := godotenv.Load()
+	if env_err != nil {
+		log.Panicln("Error loading .env file")
+	}
+	db.ConnectDB()
 
 	mux := http.NewServeMux()
 
