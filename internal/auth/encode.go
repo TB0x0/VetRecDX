@@ -16,21 +16,21 @@ func checkEmpty(input, field string) error {
 	return nil
 }
 
-func generateClaims(userInfo User, authConfig AuthConfig) (jwt.MapClaims, error) {
+func generateClaims(authConfig AuthConfig, userEntry UserDBEntry) (jwt.MapClaims, error) {
 	//collapse all errors into single output
 	var errorsList []string
 
-	if err := checkEmpty(userInfo.Id, "user ID"); err != nil {
+	if authConfig.SecretKey == nil {
+		errorsList = append(errorsList, "missing secret key")
+	}
+	if err := checkEmpty(userEntry.Id, "user ID"); err != nil {
 		errorsList = append(errorsList, err.Error())
 	}
-	if err := checkEmpty(userInfo.Email, "email"); err != nil {
+	if err := checkEmpty(userEntry.Username, "username"); err != nil {
 		errorsList = append(errorsList, err.Error())
 	}
 	if err := checkEmpty(authConfig.Issuer, "issuer"); err != nil {
 		errorsList = append(errorsList, err.Error())
-	}
-	if authConfig.SecretKey == nil {
-		errorsList = append(errorsList, "missing secret key")
 	}
 
 	if len(errorsList) > 0 {
@@ -38,21 +38,20 @@ func generateClaims(userInfo User, authConfig AuthConfig) (jwt.MapClaims, error)
 	}
 
 	claims := jwt.MapClaims{
-		"sub":         userInfo.Id,
-		"email":       userInfo.Email,
-		"roles":       userInfo.Roles,
-		"permissions": userInfo.Permissions,
-		"org_id":      userInfo.Org_id,
-		"iss":         authConfig.Issuer,
-		"iat":         time.Now().Unix(),
-		"exp":         time.Now().Add(time.Hour * 24).Unix(),
+		"sub":          userEntry.Id,
+		"username":     userEntry.Username,
+		"passwordhash": userEntry.PasswordHash,
+		"role":         userEntry.Role,
+		"iss":          authConfig.Issuer,
+		"iat":          time.Now().Unix(),
+		"exp":          time.Now().Add(time.Hour * 24).Unix(),
 	}
 
 	return claims, nil
 }
 
-func encodeJWT(userInfo User, authConfig AuthConfig) (string, error) {
-	claims, err := generateClaims(userInfo, authConfig)
+func encodeJWT(authConfig AuthConfig, userEntry UserDBEntry) (string, error) {
+	claims, err := generateClaims(authConfig, userEntry)
 	if err != nil {
 		return "", errors.New("error generating claim")
 	}

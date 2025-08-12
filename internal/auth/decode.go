@@ -28,46 +28,35 @@ func parseJWT(tokenString string, secretKey []byte) (*jwt.Token, error) {
 	return token, nil
 }
 
-func extractUserInfo(token *jwt.Token) (*User, error) {
+func extractUserInfo(token *jwt.Token) (*UserDBEntry, error) {
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok || !token.Valid {
 		return nil, errors.New("invalid token or unable to extract claims")
 	}
 
-	userInfo := &User{}
+	userInfo := &UserDBEntry{}
 
 	if sub, ok := claims["sub"].(string); ok {
 		userInfo.Id = sub
 	}
-
-	if email, ok := claims["email"].(string); ok {
-		userInfo.Email = email
+	if username, ok := claims["username"].(string); ok {
+		userInfo.Username = username
 	}
-
-	if roles, ok := claims["roles"].([]interface{}); ok {
-		for _, r := range roles {
+	if passwordhash, ok := claims["passwordhash"].(string); ok {
+		userInfo.PasswordHash = passwordhash
+	}
+	if role, ok := claims["role"].([]interface{}); ok {
+		for _, r := range role {
 			if str, ok := r.(string); ok {
-				userInfo.Roles = append(userInfo.Roles, str)
+				userInfo.Role = append(userInfo.Role, str)
 			}
 		}
-	}
-
-	if permissions, ok := claims["permissions"].([]interface{}); ok {
-		for _, p := range permissions {
-			if str, ok := p.(string); ok {
-				userInfo.Permissions = append(userInfo.Permissions, str)
-			}
-		}
-	}
-
-	if oid, ok := claims["org_id"].(float64); ok {
-		userInfo.Org_id = int(oid)
 	}
 
 	return userInfo, nil
 }
 
-func decodeJWT(tokenString string, authConfig AuthConfig) (*User, error) {
+func decodeJWT(tokenString string, authConfig AuthConfig) (*UserDBEntry, error) {
 	token, err := parseJWT(tokenString, authConfig.SecretKey)
 	if err != nil {
 		return nil, err

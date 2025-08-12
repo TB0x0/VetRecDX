@@ -5,10 +5,15 @@ type AuthConfig struct {
 	Issuer    string
 }
 
-type User struct {
-	Id          string
-	Email       string
-	Roles       []string
-	Permissions []string
-	Org_id      int
+type UserLogin struct {
+	Username string
+	Password string
+}
+
+type UserDBEntry struct {
+	Id           string
+	Username     string
+	PasswordHash string
+	Role         []string
+	CreatedAt    string
 }

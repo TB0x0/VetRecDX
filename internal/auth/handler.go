@@ -18,15 +18,15 @@ func CreateAuthConfig() (AuthConfig, error) {
 
 func ConstructJWT(authConfig AuthConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var userInfo User
+		var userEntry UserDBEntry
 
 		decoder := json.NewDecoder(r.Body)
-		if err := decoder.Decode(&userInfo); err != nil {
+		if err := decoder.Decode(&userEntry); err != nil {
 			http.Error(w, "Invalid JSON: "+err.Error(), http.StatusBadRequest)
 			return
 		}
 
-		encodeResult, err := encodeJWT(userInfo, authConfig)
+		encodeResult, err := encodeJWT(authConfig, userEntry)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
