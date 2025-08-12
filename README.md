@@ -7,7 +7,7 @@ An open source veterinary records management software for nonprofits
 - [ ] Planning and Design
   - [x] App Architecture
   - [ ] DB Schema
-  - [ ] Dependencies
+  - [x] Dependencies
 
   ## Contributing
 
