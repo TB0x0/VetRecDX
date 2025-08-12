@@ -8,24 +8,23 @@ import (
 )
 
 func main() {
-	mux := http.NewServeMux()
-
-	mux.HandleFunc("GET /", defaultHandler)
-
-	//auth
-	mux.HandleFunc("GET /admin", auth.GetUserHandler)
-
-	fmt.Printf("Server listening to %s:%s\n", "localhost", "8080")
-	err := http.ListenAndServe(":8080", mux)
+	authConfig, err := auth.CreateAuthConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
-}
 
-func defaultHandler(w http.ResponseWriter, r *http.Request) {
-	_, err := fmt.Fprintf(w, "Hello world")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("GET /", defaultHandler)
+	mux.HandleFunc("GET /health", healthHandler)
+
+	//auth
+	mux.HandleFunc("POST /create", auth.ConstructJWT(authConfig))
+	mux.HandleFunc("GET /deconstruct/{token}", auth.DeconstructJWT(authConfig)) //for testing, remove in prod
+
+	fmt.Printf("Server listening to %s:%s\n", "localhost", "8080")
+	err1 := http.ListenAndServe(":8080", mux)
+	if err1 != nil {
+		log.Fatal(err1)
 	}
 }
