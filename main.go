@@ -12,20 +12,20 @@ import (
 )
 
 func main() {
+	env_err := godotenv.Load()
+	if env_err != nil {
+		log.Panicln("Error loading .env file")
+	}
+
 	authConfig, err := auth.CreateAuthConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// DB Connection
-	env_err := godotenv.Load()
-	if env_err != nil {
-		log.Panicln("Error loading .env file")
-	}
 	db.ConnectDB()
 
+	//routes
 	mux := http.NewServeMux()
-
 	mux.HandleFunc("GET /", defaultHandler)
 	mux.HandleFunc("GET /health", healthHandler)
 
