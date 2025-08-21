@@ -16,16 +16,23 @@ import (
 var DB *sql.DB
 
 func ConnectDB() {
-	host := os.Getenv("DB_HOST")
-	port := os.Getenv("DB_PORT")
-	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASSWORD")
-	dbname := os.Getenv("DB_NAME")
-	openconns := os.Getenv("DB_OPEN_CONNS")
-	maxidle := os.Getenv("DB_MAX_IDLE")
+	dbconfig := DBConfig{
+		host:      os.Getenv("DB_HOST"),
+		port:      os.Getenv("DB_PORT"),
+		user:      os.Getenv("DB_USER"),
+		password:  os.Getenv("DB_PASSWORD"),
+		dbname:    os.Getenv("DB_NAME"),
+		openconns: os.Getenv("DB_OPEN_CONNS"),
+		maxidle:   os.Getenv("DB_MAX_IDLE"),
+	}
 
 	dsn := fmt.Sprintf(
-		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname,
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		dbconfig.host,
+		dbconfig.port,
+		dbconfig.user,
+		dbconfig.password,
+		dbconfig.dbname,
 	)
 
 	var err error
@@ -34,14 +41,12 @@ func ConnectDB() {
 		log.Fatalf("DB open failure: %v", err)
 	}
 
-	openconns_i, err := strconv.Atoi(openconns)
-
+	openconns_i, err := strconv.Atoi(dbconfig.openconns)
 	if err != nil {
 		log.Panicf("Environment variable conversion error (DB_OPEN_CONNS): %v\n", err)
 	}
 
-	maxidle_i, err := strconv.Atoi(maxidle)
-
+	maxidle_i, err := strconv.Atoi(dbconfig.maxidle)
 	if err != nil {
 		log.Panicf("Environment variable conversion error (DB_MAX_IDLE): %v\n", err)
 	}
