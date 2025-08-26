@@ -4,9 +4,14 @@ An open source veterinary records management software for nonprofits
 
 ## Current Tasks
 
-- [ ] Planning and Design
+- [ ] API Endpoints and Backend Functions
+  - [ ] API Endpoints
+  - [ ] DB Helper Functions
+  - [ ] Password Hashing Functions
+
+- [x] Planning and Design
   - [x] App Architecture
-  - [ ] DB Schema
+  - [x] DB Schema
   - [x] Dependencies
 
 ## Contributing
@@ -24,3 +29,4 @@ An open source veterinary records management software for nonprofits
   Assuming you already have a workable postgres instance.
   Create your new Dev DB on localhost
   Create .env file in the root of the VetRecDX directory (Use the example in planning/envexample)
+  Run the migration scripts on your DB
