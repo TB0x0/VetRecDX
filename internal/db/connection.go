@@ -63,15 +63,3 @@ func ConnectDB() {
 	fmt.Println("DB Connected Successfully")
 }
 
-// CreateUser inserts a new user into the database
-func CreateUser(username, password, role string) {
-	log.Println("Adding User")
-	addUserQuery := `INSERT INTO users (username, password_hash, role) VALUES ($1, $2, $3) RETURNING id`
-	var id int
-	var err error
-	err = DB.QueryRow(addUserQuery, username, password, role).Scan(&id)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("Inserted record ID: %d\n", id)
-}

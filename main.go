@@ -23,7 +23,8 @@ func main() {
 	}
 
 	db.ConnectDB()
-	// db.CreateUser("test","HASH!!","Assistant") //TEST
+	//db.CreateUser("test2","HASH!!","Assistant") //TEST
+	db.GetUser("test2")
 
 	//routes
 	mux := http.NewServeMux()
