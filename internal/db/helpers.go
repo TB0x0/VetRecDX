@@ -39,5 +39,5 @@ func DeleteUser(userid string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("Inserted record ID: %s\n", userid)
+	fmt.Printf("Deleted record ID: %s\n", userid)
 }
