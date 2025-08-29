@@ -16,6 +16,7 @@ import (
 var DB *sql.DB
 
 func ConnectDB() {
+	/*
 	dbconfig := DBConfig{
 		host:      os.Getenv("DB_HOST"),
 		port:      os.Getenv("DB_PORT"),
@@ -34,9 +35,10 @@ func ConnectDB() {
 		dbconfig.password,
 		dbconfig.dbname,
 	)
+	*/
 
 	var err error
-	DB, err = sql.Open("postgres", dsn)
+	DB, err = sql.Open("postgres", os.Getenv("PSQL_STRING"))
 	if err != nil {
 		log.Fatalf("DB open failure: %v", err)
 	}

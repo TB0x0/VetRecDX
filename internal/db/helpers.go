@@ -16,16 +16,6 @@ func CreateUser(username, password, role string) {
 	fmt.Printf("Inserted record ID: %d\n", id)
 }
 
-func GetUser(username string) {
-	getUserQuery := `SELECT FROM users WHERE username = $1`
-	var id int
-	res, err error = DB.Exec(getUserQuery, username)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("Returning record ID: %d, %s\n", id, username)
-}
-
 func UpdateUser(userid, username, password, role string) {
 	updateUserQuery := `
 	UPDATE users
