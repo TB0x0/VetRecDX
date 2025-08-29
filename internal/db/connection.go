@@ -16,7 +16,6 @@ import (
 var DB *sql.DB
 
 func ConnectDB() {
-	/*
 	dbconfig := DBConfig{
 		host:      os.Getenv("DB_HOST"),
 		port:      os.Getenv("DB_PORT"),
@@ -26,7 +25,7 @@ func ConnectDB() {
 		openconns: os.Getenv("DB_OPEN_CONNS"),
 		maxidle:   os.Getenv("DB_MAX_IDLE"),
 	}
-
+	/*
 	dsn := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		dbconfig.host,
