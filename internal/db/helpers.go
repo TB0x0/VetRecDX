@@ -5,6 +5,20 @@ import (
 	"log"
 )
 
+// USER FUNCTIONS
+
+func GetUser(username string) {
+	log.Println("Querying user ", username)
+	getUserQuery := `SELECT id FROM users WHERE username = $1`
+
+	var id int
+	var err error = DB.QueryRow(getUserQuery, username).Scan(&id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("Found user %s with id %d\n", username, id)
+}
+
 func CreateUser(username, password, role string) {
 	log.Println("Adding User")
 	addUserQuery := `INSERT INTO users (username, password_hash, role) VALUES ($1, $2, $3) RETURNING id`
@@ -40,4 +54,43 @@ func DeleteUser(userid string) {
 		log.Fatal(err)
 	}
 	fmt.Printf("Deleted record ID: %s\n", userid)
+}
+
+// MEDICATIONS FUNCTIONS
+
+func GetMed(username string) {
+	log.Println("Querying user ", username)
+	getUserQuery := `SELECT id FROM users WHERE username = $1`
+
+	var id int
+	var err error = DB.QueryRow(getUserQuery, username).Scan(&id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("Found user %s with id %d\n", username, id)
+}
+
+func CreateMed(patient_id, name, dosage, start_date, end_date, notes string) {
+	log.Println("Adding Medication")
+	addMedQuery := `INSERT INTO medications (patient_id, name, dosage, start_date, end_date, notes) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
+	var id int
+	var err error = DB.QueryRow(addMedQuery, patient_id, name, dosage, start_date, end_date, notes).Scan(&id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("Inserted medications record ID: %d\n", id)
+}
+
+
+// PATIENT FUNCTIONS
+
+func CreatePatient(name, species, breed, gender, date_of_birth, flags string) {
+	log.Println("Adding Patient")
+	addPatientQuery := `INSERT INTO patients (name, species, breed, gender, date_of_birth, flags) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
+	var id int
+	var err error = DB.QueryRow(addPatientQuery, name, species, breed, gender, date_of_birth, flags).Scan(&id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("Inserted patient record ID: %d\n", id)
 }

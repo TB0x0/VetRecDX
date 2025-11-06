@@ -25,6 +25,8 @@ func main() {
 	db.ConnectDB()
 	//db.CreateUser("test","HASH!!","Assistant") //TEST
 	//db.GetUser("test")
+	//db.CreateMed("2","aspirin","50mg daily", "11/6/2025", "11/11/2025", "For pain")
+	//db.CreatePatient("Spot","Dog","Terrier","Male","11/6/2025","Aggressive")
 
 	//routes
 	mux := http.NewServeMux()
